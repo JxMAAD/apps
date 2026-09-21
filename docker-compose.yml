@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apps
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www:Z
+    ports:
+      - "5005:8000"
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=apps_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  mysql:
+    image: mysql:8.0
+    container_name: apps_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: apps_db
+      MYSQL_USER: apps_user
+      MYSQL_PASSWORD: apps_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: apps_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
