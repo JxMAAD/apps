@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
-#[Table('kategori__barangs')]
+#[Table('kategori_barangs')]
 #[Fillable(['nama_kategori'])]
-class Kategori_Barang extends Model
+class KategoriBarang extends Model
 {
-    //
+    public function Barang ()
+    {
+        return $this->hasMany(Barang::class, 'kategori_id');
+    }
 }
