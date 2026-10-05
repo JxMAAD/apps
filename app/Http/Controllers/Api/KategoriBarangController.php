@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\KategoriBarang;
 use Illuminate\Http\Request;
 
@@ -11,12 +12,6 @@ class KategoriBarangController extends Controller
     {
         $kategori = KategoriBarang::all();
         return view('Kategori-Barang.index', compact('kategori'));
-    }
-
-    // CREATE: Menampilkan form tambah
-    public function create()
-    {
-        return view('Kategori-Barang.create');
     }
 
     // CREATE: Menyimpan data ke database
@@ -34,7 +29,7 @@ class KategoriBarangController extends Controller
     }
 
     // UPDATE: Menampilkan form edit
-    public function edit($id)
+    public function show($id)
     {
         $kategori = KategoriBarang::findOrFail($id);
         return view('Kategori-Barang.edit', compact('kategori'));
